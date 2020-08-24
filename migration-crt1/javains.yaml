@@ -1,0 +1,18 @@
+---
+- hosts:  BS1-DRPRD
+  become: yes
+  tasks:
+
+
+  - name: "Upload Java"
+    copy:
+      src:  "/root/blackstone/jdk-8u191-linux-x64.rpm"
+      dest: "/opt/"
+      owner: "tomcat"
+      group: "tomcat"
+      mode: 0777
+
+  - name: "Install Java"
+    yum:
+      name: "/home/opc/jdk-8u191-linux-x64.rpm"
+      state: present

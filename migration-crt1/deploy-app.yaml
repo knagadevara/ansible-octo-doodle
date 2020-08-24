@@ -1,0 +1,41 @@
+---
+- hosts:  BS1-QAT
+  become: yes
+  tasks:
+
+  - name: "Create Group"
+    group:
+      state: present
+      name: dba
+
+  - name: "Create Oracle User"
+    user:
+      name: oracle
+      state: present
+      groups: tomcat , dba
+      generate_ssh_key : yes
+      ssh_key_file: .ssh/oracle
+      ssh_key_type: rsa
+      ssh_key_bits: 2048
+
+  - name: "Send the pub file to AuthFile"
+    copy:
+      src:  "/root/nallarai/oracle-pub"
+      dest:  "/home/oracle/.ssh/authorized_keys"
+      owner: "oracle"
+      group: "oracle"
+      mode: 0600
+
+  - name: "Upload Containers"
+    copy:
+      src:  "/root/nallarai/{{item}}"
+      dest: "/opt/"
+      owner: "tomcat"
+      group: "dba"
+      mode: 0775
+    with_items:
+      - 1.tar.gz
+      - 2.tar.gz
+      - 3.tar.gz
+      - 4.tar.gz
+

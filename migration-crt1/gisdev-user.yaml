@@ -1,0 +1,12 @@
+- hosts: str_development
+  gather_facts: no
+  become: true
+
+  tasks:
+  - name:  "Change group User gdev"
+    user:
+      name: gdev
+      state: present
+      shell: /bin/bash
+      append: yes
+      groups: wheel

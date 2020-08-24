@@ -1,0 +1,69 @@
+---
+- hosts: EBS_PROD
+  become: yes
+  vars:
+    packages:
+      - nrpe
+      - nagios-plugins
+      - nagios-common
+
+  tasks:
+  - name: "Download EPEL"
+    get_url:
+      url: "http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+      dest: /opt/
+      mode: 0777
+
+  - name: "Install EPEL"
+    yum: 
+      name: "/opt/epel-release-6-8.noarch.rpm"
+      state: present
+      disable_gpg_check: yes
+
+  - name: "Enable Repository"
+    yum:
+      enablerepo: epel
+      name: "{{ packages }}"
+      update_cache : yes
+      state: present
+
+  - name: "Change the host config"
+    lineinfile:
+      path: "/etc/nagios/nrpe.cfg"
+      regexp: "^allowed_hosts=127.0.0.1,::1"
+      line: "allowed_hosts=127.0.0.1"
+
+  - name: "Add Memory check Plugins configuration into host config"
+    lineinfile:
+     path: "/etc/nagios/nrpe.cfg"
+     line: 'command[check_mem]=/usr/lib64/nagios/plugins/check_memory.sh 70 80'
+
+  - name: "Copying the Memory check scripts to required location"
+    copy:
+     src: "/root/tomato_scripts/memory.sh"
+     dest: "/usr/lib64/nagios/plugins/check_memory.sh"
+     owner: root
+     group: root
+     mode: 0755
+
+  - name: "Add Port on Firewall"
+    iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: 5666
+      jump: ACCEPT
+
+  - name: "service reload"
+    service:
+      name: "nrpe"
+      enabled: yes
+      state: started
+
+  - name: "Save IPtables"
+    command: service iptables save
+    register: iptab_op1
+
+  - name: "Ip Tables Cond"
+    debug: 
+      var: iptab_op1
+      verbosity: 4

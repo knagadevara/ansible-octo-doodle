@@ -1,0 +1,17 @@
+---
+- hosts: sterling_development
+  gather_facts: no
+  become: true
+  tasks:
+  - name:  "Create User gisdev"
+    user:
+      name: gisdev
+      state: present
+      shell: /bin/bash
+  - name: "Create a Directory /d01"
+    file:
+      path: '/d01'
+      state: directory
+      owner: gisdev
+      group: gisdev
+      mode: u=rwx,g=rwx,o=rx,ug+s

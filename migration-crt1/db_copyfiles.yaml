@@ -1,0 +1,36 @@
+---
+- hosts:  BS1-DB
+  become: yes
+  tasks:
+
+  - name: "Create Super Admin User"
+    user:
+      name: rmorgan
+      state: present
+      groups: appsupport , dbadmin
+      generate_ssh_key : yes
+      ssh_key_file: .ssh/rmorgan
+      ssh_key_type: rsa
+      ssh_key_bits: 2048
+
+#  - name: "Create Authorized Files"
+#    file:
+#      path: "/home/{{item}}/.ssh/authorized_keys"
+#      state: present
+#    with_items:
+#      - slayson
+#      - bchesman
+#      - desposito
+
+  - name: "copy files {{item}}"
+    copy:
+      src: "/root/blackstone/{{item}}"
+      dest: "/home/{{item}}/.ssh/authorized_keys"
+      owner: "{{item}}"
+      group: "{{item}}"
+      mode: 0600
+    with_items:
+      - usrw1
+      - usrw2
+      - usrw3
+      - usrw4

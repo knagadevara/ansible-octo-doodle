@@ -1,0 +1,18 @@
+---
+- hosts:  BS1-QAT
+  become: yes
+  tasks:
+
+  - name: "Upload Containers"
+    unarchive:
+      src:  "/root/nallarai/{{item}}"
+      dest: "/opt/"
+      owner: "tomcat"
+      group: "dba"
+      mode: 0775
+    with_items:
+      - 1.tar.gz
+      - 2.tar.gz
+      - 3.tar.gz
+      - 3.tar.gz
+

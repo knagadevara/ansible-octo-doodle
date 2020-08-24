@@ -1,0 +1,55 @@
+---
+- hosts: BS1-PROD , BS1-DR
+  become: true
+  gather_facts: no
+  vars:
+    packages:
+        - curl
+        - cabextract
+        - xorg-x11-font-utils
+        - fontconfig
+        - libmspack
+
+  tasks:
+  - name: "add tomcat user"
+    user:
+     name: tomcat
+     comment: "tomcat user"
+
+  - name: "Download MStcore"
+    get_url:
+      url: "https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm"
+      dest: /opt/
+      mode: 0777
+
+  - name: "Download Cabextract"
+    get_url:
+      url: "ftp://ftp.pbone.net/mirror/download.fedora.redhat.com/pub/fedora/epel/7/x86_64/Packages/c/cabextract-1.5-1.el7.x86_64.rpm"
+      dest: /opt/
+      mode: 0777
+
+  - name: "Install cabextract"
+    yum:
+      name: "/opt/cabextract-1.5-1.el7.x86_64.rpm"
+      state: present
+  
+  - name: "Install MStcore"
+    yum:
+      name: "/opt/msttcore-fonts-installer-2.6-1.noarch.rpm"
+      state: present
+  
+  - name: "Install the Fonts"
+    yum:
+      name: "{{ packages }}"
+      state: present
+
+
+  - name: "Update server with latest packages"
+    yum:
+      name: "*"
+      state: latest
+      update_cache: yes
+    register: yum_ret
+
+  - debug:
+      msg: "{{ yum_ret }}"

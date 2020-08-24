@@ -1,0 +1,12 @@
+- hosts: str_production
+  gather_facts: no
+  become: true
+
+  tasks:
+  - name:  "Change group User gprod"
+    user:
+      name: gprod
+      state: present
+      shell: /bin/bash
+      append: yes
+      groups: wheel

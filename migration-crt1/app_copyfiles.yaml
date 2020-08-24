@@ -1,0 +1,18 @@
+---
+- hosts:  BS1-APP , BS1-DB
+  become: yes
+  tasks:
+
+  - name: "copy SSH Keys to AUTHZone"
+    copy:
+      src: "/root/blackstone/{{item}}"
+      dest: "/home/{{item}}/.ssh/authorized_keys"
+      owner: "{{item}}"
+      group: "{{item}}"
+      mode: 0400
+    with_items: 
+      - adad
+      - shartddfdzell
+      - rere
+      - fddcv
+

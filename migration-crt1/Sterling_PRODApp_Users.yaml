@@ -1,0 +1,17 @@
+---
+- hosts: sterling_production
+  gather_facts: no
+  become: true
+  tasks:
+  - name:  "Create User gisprod"
+    user:
+      name: gisprod
+      state: present
+      shell: /bin/bash
+  - name: "Create a Directory /d01"
+    file:
+      path: '/d01'
+      state: directory
+      owner: gisprod
+      group: gisprod
+      mode: u=rwx,g=rwx,o=rx,ug+s

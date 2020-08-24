@@ -1,0 +1,40 @@
+---
+- hosts: str_development
+  become: true
+  tasks:
+  - name:  "Create User tom"
+    user:
+      name: tom
+      state: absent
+      generate_ssh_key : yes
+      ssh_key_file: .ssh/tom
+      ssh_key_type: rsa
+      ssh_key_bits: 2048
+      shell: /bin/bash
+      force: yes
+      remove: yes 
+  
+  - name:  "Create User harry"
+    user:
+      name: harry
+      state: absent
+      generate_ssh_key : yes
+      ssh_key_file: .ssh/harry
+      ssh_key_type: rsa
+      ssh_key_bits: 2048
+      shell: /bin/bash
+      force: yes
+      remove: yes
+  
+  - name:  "Create User sadmin"
+    user:
+      name: sadmin
+      state: absent
+      generate_ssh_key : yes
+      ssh_key_file: .ssh/sadmin
+      ssh_key_type: rsa
+      ssh_key_bits: 2048
+      shell: /bin/bash
+      force: yes
+      remove: yes
+

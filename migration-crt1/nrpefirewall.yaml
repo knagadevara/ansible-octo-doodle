@@ -1,0 +1,25 @@
+---
+- hosts: BS1-PROD , BS1-DR
+  become: yes
+  tasks:
+
+  - name: "service reload"
+    service:
+      name: "nrpe"
+      enabled: yes
+      state: started
+
+  - name: "Add Port on Firewall"
+    firewalld:
+      port: 5666/tcp
+      permanent: yes
+      state: enabled
+
+  - name: "Restart the firewalld"
+    command: systemctl restart firewalld.service
+    register: iptab_op1
+
+  - name: "FirewallD"
+    debug:
+      var: iptab_op1
+      verbosity: 4

@@ -1,0 +1,19 @@
+---
+- hosts: peoplesoft_production_app
+  gather_facts: no
+  become: true
+  tasks:
+  - name:  "Create User psadmin"
+    user:
+      name: psadmin
+      state: present
+      shell: /bin/bash
+  - name: "Create a User rlanka with Key"
+    user:
+      name: rlanka
+      state: present
+      shell: /bin/bash
+      generate_ssh_key : yes
+      ssh_key_file: .ssh/rlanka
+      ssh_key_type: rsa
+      ssh_key_bits: 2048

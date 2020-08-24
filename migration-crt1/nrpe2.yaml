@@ -1,0 +1,46 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    packages:
+      - nrpe
+      - nagios-plugins
+      - nagios-common
+  tasks:
+  - name: "Download EPEL"
+    get_url:
+      url: http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+      dest: /opt/
+      mode: 0777
+
+  - name: "Install EPEL"
+    yum: 
+      name: /opt/epel-release-6-8.noarch.rpm
+      state: present
+      disable_gpg_check: yes
+
+  - name: "Enable Repository"
+    yum:
+      enablerepo: epel
+      name: "{{ packages }}"
+      update_cache : no
+      state: present
+
+  - name: "Change the host config"
+    lineinfile:
+      path: "/etc/nagios/nrpe.cfg"
+      regexp: "^allowed_hosts=127.0.0.1,::1"
+      line: "allowed_hosts=127.0.0.1"
+
+  - name: "service reload"
+    service:
+      name: "nrpe"
+      enabled: yes
+      state: started 
+      
+  - name: "Add Port on Firewall"
+    iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: 5666
+      jump: ACCEPT

@@ -1,0 +1,5 @@
+---
+- hosts: sterling_production
+  tasks:
+  - name: 'Ping All'
+    ping:

@@ -1,0 +1,35 @@
+---
+- hosts: EBS_PROD
+  become: yes
+  vars:
+    packages:
+      - nrpe
+      - nagios-plugins
+      - nagios-common
+
+  tasks:
+  - name: "Install EPEL"
+    yum: 
+      name: "/opt/epel-release-latest-6.noarch.rpm"
+      state: absent
+      disable_gpg_check: yes
+
+  - name: "Install EPEL7"
+    yum:
+      name: "http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm"
+      state: absent
+      disable_gpg_check: yes
+
+  - name: "Install EPEL6"
+    yum:
+      name: "http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+      state: absent
+      disable_gpg_check: yes
+
+  - name: "Enable Repository"
+    yum:
+      enablerepo: epel
+      name: "{{ packages }}"
+      update_cache : no
+      state: absent
+

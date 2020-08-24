@@ -1,0 +1,12 @@
+---
+- hosts: str_development
+  become: true
+  gather_facts: no
+  tasks:
+  - name: "copy files"
+    copy:
+      src: 'sadmin.pub'
+      dest: '/home/sadmin/.ssh/authorized_keys'
+      owner: 'sadmin'
+      group: 'sadmin'
+      mode: 0600

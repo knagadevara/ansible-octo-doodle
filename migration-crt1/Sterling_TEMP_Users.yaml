@@ -1,0 +1,57 @@
+---
+- hosts: sterling_temp_web
+  gather_facts: no
+  become: true
+  vars:
+    packages:
+      - gtk2.i686
+      - libXtst.i686
+
+  tasks:
+
+#  - name: "Install Packages"
+#    yum:
+#      name: "{{ packages }}"
+#      state: present
+#      update_cache: yes
+#      security: yes
+
+  - name:  "Create User gisprod"
+    user:
+      name: gisprod
+      state: present
+      shell: /bin/bash
+      groups: wheel
+
+  - name:  "Create Users"
+    user:
+      name: "{{item}}"
+      state: present
+      shell: /bin/bash
+      generate_ssh_key : yes
+      ssh_key_file: .ssh/{{item}}
+      ssh_key_type: rsa
+      ssh_key_bits: 2048
+      groups: gisprod
+    with_items:
+     - cgee
+     - ealban
+
+  - name: "copy Keys"
+    copy:
+      src: "/root/tomato_scripts/{{item}}.pub"
+      dest: "/home/{{item}}/.ssh/authorized_keys"
+      owner: "{{item}}"
+      group: "{{item}}"
+      mode: 0600
+    with_items:
+     - cgee
+     - ealban
+
+  - name: "Create a Directory /d01"
+    file:
+      path: '/d01'
+      state: directory
+      owner: gisprod
+      group: gisprod
+      mode: u=rwx,g=rwx,o=rx,ug+s

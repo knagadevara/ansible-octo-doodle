@@ -1,0 +1,16 @@
+---
+- hosts: sterling_temp
+  gather_facts: no
+  become: yes
+  vars:
+    packages:
+      - gtk2.i686
+      - libXtst.i686
+  
+  tasks:
+  - name: "Install Packages"
+    yum:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+      security: yes  

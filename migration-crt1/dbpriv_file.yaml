@@ -1,0 +1,24 @@
+---
+- hosts:  BLACKSTONE-DRPRD-DB
+  become: yes
+  tasks:
+  
+  - name: "Create User"
+    user:
+      name: "oracle"
+      state: present
+      groups: dbadmin
+
+  - name:
+    lineinfile:
+      backup: yes
+      path: "/etc/sudoers"
+      line: "{{item}}  ALL=(root) NOPASSWD:/bin/su - oracle"
+    with_items:
+      - rashmiagrawal
+      - ssethuraman
+      - desposito
+      - adent
+      - slau
+      - iattley
+      - slayson

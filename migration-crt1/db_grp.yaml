@@ -1,0 +1,14 @@
+---
+- hosts: BS1-DB
+  become: yes
+  tasks:
+  - name:
+    lineinfile:
+      backup: yes
+      path: "/etc/sudoers"
+      line: "{{item}}  ALL=(root) NOPASSWD:/bin/su - oracle"
+    with_items:
+      - usrw1
+      - usrw2
+      - usrw3
+      - usrw4

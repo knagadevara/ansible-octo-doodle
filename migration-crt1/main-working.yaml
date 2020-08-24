@@ -1,0 +1,54 @@
+---
+- hosts: str_production
+  gather_facts: no
+  become: true
+  vars:
+    my_groups:
+    - gsdprod
+    - wheel
+
+  tasks:
+  - name:  "Create User tom"
+    user:
+      name: tom
+      state: present
+      shell: /bin/bash
+      append: yes
+      groups: '{{ my_groups }}'
+
+  - name: "Create auth for tom"
+    script: tom.sh
+    regsdter: tom_perm
+
+  
+  - name:  "Create User harry"
+    user:
+      name: harry
+      state: present
+      shell: /bin/bash
+      append: yes
+      groups: '{{ my_groups }}'
+
+  - name: "Create auth for harry"
+    script: harry.sh
+    regsdter: harry_perm
+
+ 
+  - name:  "Create User sadmin"
+    user:
+      name: sadmin
+      state: present
+      shell: /bin/bash
+      append: yes
+      groups: '{{ my_groups }}'
+
+  - name: "Create auth for sadmin"
+    script: sadmin.sh
+    regsdter: sadmin_perm
+
+  - name: "tom Status"
+    debug: msg="{{ tom_perm }}"
+  - name: "harry Status"
+    debug: msg="{{ harry_perm }}"
+  - name: "sadmin Status"
+    debug: msg="{{ sadmin_perm }}"
