@@ -1,0 +1,24 @@
+---
+    - hosts: nfs_client
+      remote_user: root
+      become: yes
+      vars:
+        nfsIP:  "{{ hosts[groups['nfs_server'][0]]['ansible_enp0s8']['ipv4']['address'] }}"
+        sharePoint: "/share"
+      tasks:
+
+        - name: Create mountable dir
+          file:
+            path: /share
+            state: directory
+            mode: 755
+            owner: root
+            group: root
+
+        - name: set mountpoints
+          mount:
+            path: /share
+            src: "M192168056102.k8x77-mgr-prd.PyDevRa.zone:/share"
+            fstype: nfs
+            opts: defaults
+            state: mounted

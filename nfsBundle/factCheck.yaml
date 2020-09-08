@@ -1,0 +1,33 @@
+---
+- name: Ansible Variable Example Playbook
+  hosts: nfs_server
+  become: yes
+  tasks:
+
+
+    # display the variable data type
+    - debug:
+        msg:
+          - " Data type of 'ansible_architecture'  is {{ ansible_architecture | type_debug }} "
+          - " Data type of 'ansible_apparmor' is {{ ansible_apparmor | type_debug }} "
+          - " Data type of 'ansible_all_ipv4_addresses' is {{ ansible_all_ipv4_addresses | type_debug }} "
+          - " Data type of ansible_enp0s8 is {{ hostvars[groups['nfs_server'][0]]['ansible_enp0s8']['ipv4']['address'] | type_debug }}"
+    # Simply printing the value of fact which is Ansible UnSafe Text type
+    - debug:
+        msg: "{{ ansible_architecture }}"
+
+
+    # Accessing an element of dictionary
+    - debug:
+        msg: "{{ansible_apparmor.status}}"
+
+    # Accessing the list
+    - debug:
+        msg: "{{ansible_all_ipv4_addresses}}"
+
+    # Accessing the Second Element of the list
+    - debug:
+        msg: "{{ansible_all_ipv4_addresses[1]}}"
+
+    - debug:
+        msg: "{{ hostvars[groups['nfs_server'][0]]['ansible_enp0s8']['ipv4']['address'] }}"

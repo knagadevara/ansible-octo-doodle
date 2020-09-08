@@ -1,0 +1,46 @@
+---
+  - hosts: nfs_server
+    remote_user: root
+    become: yes
+    gather_facts: no
+
+    tasks:
+      - name: install nfs
+        dnf:
+          name:
+            - nfs-utils
+            - nfs4-acl-tools
+          state: present
+
+      - name: Create mountable dir
+        file:
+          path: /share
+          state: directory
+          mode: 755
+          owner: root
+          group: root
+
+      - name: make sure the mount drive has a filesystem
+        filesystem:
+          fstype: xfs
+          dev: /dev/app_cluster_store/nfs_sharepoint
+
+      - name: set mountpoints
+        mount:
+          path: /share
+          src: /dev/app_cluster_store/nfs_sharepoint
+          fstype: xfs
+          opts: defaults
+          state: mounted
+
+      - name: copy /etc/exports
+        template:
+          src: exports.j2
+          dest: /etc/exports
+          owner: root
+          group: root
+
+      - name: restart nfs server
+        service:
+          name: nfs-server
+          state: restarted
