@@ -1,0 +1,31 @@
+---
+all:
+  hosts:
+  children:
+
+    k8x77-mgr-prd:
+      hosts:
+        M192168056101.k8x77-mgr-prd.PyDevRa.zone
+        M192168056102.k8x77-mgr-prd.PyDevRa.zone
+      vars:
+
+
+    k8x77-wkr-prd:
+      hosts:
+        W192168056103.k8x77-wkr-prd.PyDevRa.zone
+        W192168056104.k8x77-wkr-prd.PyDevRa.zone
+        W192168056105.k8x77-wkr-prd.PyDevRa.zone
+      vars:
+
+    nfs_server:
+      hosts:
+        M192168056101.k8x77-mgr-prd.PyDevRa.zone
+      vars:
+
+    nfs_client:
+      hosts:
+        W192168056103.k8x77-wkr-prd.PyDevRa.zone
+        W192168056104.k8x77-wkr-prd.PyDevRa.zone
+        W192168056105.k8x77-wkr-prd.PyDevRa.zone
+        M192168056101.k8x77-mgr-prd.PyDevRa.zone
+      vars:        
