@@ -5,14 +5,14 @@
 
       nfs_server:
         hosts:
-          M192168056101.k8x77-mgr-prd.PyDevRa.zone
+          M192168056101.k8x77-mgr-prd.PyDevRa.zone:
         vars:
 
       nfs_client:
         hosts:
-          W192168056103.k8x77-wkr-prd.PyDevRa.zone
-          W192168056104.k8x77-wkr-prd.PyDevRa.zone
-          W192168056105.k8x77-wkr-prd.PyDevRa.zone
-          M192168056101.k8x77-mgr-prd.PyDevRa.zone
+          W192168056103.k8x77-wkr-prd.PyDevRa.zone:
+          W192168056104.k8x77-wkr-prd.PyDevRa.zone:
+          W192168056105.k8x77-wkr-prd.PyDevRa.zone:
+          M192168056101.k8x77-mgr-prd.PyDevRa.zone:
 
         vars:
