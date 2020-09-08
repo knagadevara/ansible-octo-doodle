@@ -2,7 +2,7 @@
 --------------------
 
 Contains inventory files for all the environments of same cluster
--   hostInventory.yaml
+-   clustername_hostInventory.yaml
     - Hosts
     - Groups
     - Variables
