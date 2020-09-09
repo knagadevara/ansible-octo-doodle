@@ -1,31 +1,27 @@
-#### ansible-octo-doodle
-------------------------
+## ansible-octo-doodle
+----------------------
 
-- Adhoc commands:
+#### TestinGround - Emulate and Observe!
+----------------------------------------
 
-        Syntax:
+- Tests that have to be done or theories that have to be validated beforing moving them to production
+- Doubts that have to verified, which would be part of the solution plan.
+- Will this work if a parameter is added or removed???
+- re-think an existing problem!
+- Document important findings, which were thought to work otherwise [ design epiphany ]
 
-        ansible <host-name/group-name> -b -i <inventory file path> -m <module>
-        ansible nfs_server -b -i hostInventory.yaml -m copy -a "src=./exports dest=/etc/exports"
-        ansible nfs_server -i hostInventory.yaml -a "ls -alstr /etc/exports"
-        
-        Note: 
-        "-b" is used to execute commands as esclated user.
-        "-a" <"arguments in quotes"> complements with -m or to run a custom shell script with arguments.
+#### GLOBAL INVENTORY & ROLES
+-----------------------------
 
-- Exception/Error Handeling can be achieved in ansible via 'block' , 'rescue' and 'always' keywords in a task
+Inventory contain files for all the environments of same cluster, with their respected
+-   clustername_hostInventory.yaml
+    - Hosts
+    - Groups
+    - Variables
 
-        syntax:
-        
-        tasks:
-          block:
-            - name: task1
-              fetch:
-                src: "/var/lib/elogger"
-                dest: "/share/"
-           rescue:
-             - debug:
-                 msg: " This file dosent exist on any {{ ansible_hostname }} "
-           always:
-             - debug:
-                 msg: "Always run if the execution is success or a failure"
+Roles contain the files for all the environments of same cluster.
+
+#### nfsBundle
+--------------
+
+contains YAML playbooks which installs and configures  nfs: client/server on host machines.
