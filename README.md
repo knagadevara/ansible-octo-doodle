@@ -11,4 +11,21 @@
         
         Note: 
         "-b" is used to execute commands as esclated user.
-        "-a" <"arguments in quotes"> complements with -m or to run a custom shell script with arguments. 
+        "-a" <"arguments in quotes"> complements with -m or to run a custom shell script with arguments.
+
+- Exception/Error Handeling can be achieved in ansible via 'block' , 'rescue' and 'always' keywords in a task
+
+        syntax:
+        
+        tasks:
+          block:
+            - name: task1
+              fetch:
+                src: "/var/lib/elogger"
+                dest: "/share/"
+           rescue:
+             - debug:
+                 msg: " This file dosent exist on any {{ ansible_hostname }} "
+           always:
+             - debug:
+                 msg: "Always run if the execution is success or a failure"

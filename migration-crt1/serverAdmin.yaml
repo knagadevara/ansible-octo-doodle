@@ -35,6 +35,7 @@
 
     - name: "copy checsumKey Secred to Apache-Chief"
       when: ansible_hostname == "W192168056104"
+      ignore_errors: yes
       copy:
         src:  "/opt/cert/apache/EncapKey.p9x"
         dest: "/var/www/html/ServiceMaster/EncapKey.p9x"
