@@ -2,6 +2,7 @@
     - hosts: nfs_client
       remote_user: root
       become: yes
+
       vars:
         nfsIP:  "{{ hosts[groups['nfs_server'][0]]['ansible_enp0s8']['ipv4']['address'] }}"
         sharePoint: "/share"
@@ -22,3 +23,32 @@
             fstype: nfs
             opts: defaults
             state: mounted
+
+# Will not throw errors if the file does not exist.
+
+          block:
+            - name: "Get file to sharepoint"
+              fetch:
+                src: "/var/lib/elogger"
+                dest: "/share/"
+
+          rescue:
+            - debug:
+                msg: "This file dosent exist on any {{ ansible_hostname }} "
+
+
+            - name: "Copy the file from Base NFS-Server to NFS-CLients using Method Pull"
+              loop:
+                - "/opt/doc/x1"
+                - "/opt/doc/x2"
+              synchronize:
+                src: {{ item }}
+                dest: {{ item }}
+                mode: "pull"
+                delegate_to: "{{ groups['nfs_server'][0] }}"
+                register: syncfileStat
+                run_once: true
+
+          always:
+            - debug:
+                msg: "Files Copied"
