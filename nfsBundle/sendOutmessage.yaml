@@ -1,0 +1,16 @@
+---
+- hosts: nfs_client
+  tasks:
+    - name: "create a file for Cicada 911"
+      register: vicmos
+      file:
+        path: "/share/testfile"
+        state: touch
+
+    - name: "display vicmos"
+      debug: msg=" {{ vicmos }} "
+    
+    - name: "edit file save variables"
+      lineinfile:
+        path: /share/testfile
+        line: "{ vicmos : {{ vicmos.uid }} }"
