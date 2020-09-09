@@ -1,0 +1,18 @@
+---
+- hosts: web_layer
+  become: yes
+  handlers:
+    - name: "restart httpd service"
+      listen: "restart-Apache2_webapp"
+      service:
+        name: "httpd"
+        state: "restarted"
+
+  tasks:
+    - name: "Change the default server admin to info_devroot@karmicsaint.com"
+      notify: "restart-Apache2_webapp"
+      replace: 
+        path: "/etc/httpd/conf/httpd.conf"
+        regexp: '^ServerAdmin.*$'
+        replace: 'ServerAdmin info_devroot@karmicsaint.com'
+        backup: yes
