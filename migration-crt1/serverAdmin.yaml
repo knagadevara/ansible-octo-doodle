@@ -1,6 +1,7 @@
 ---
 - hosts: web_layer
   become: yes
+
   handlers:
     - name: "restart httpd service"
       listen: "restart-Apache2_webapp"
@@ -9,6 +10,38 @@
         state: "restarted"
 
   tasks:
+
+    - name: "create web-admin users"
+      loop:
+        - knagadevara
+        - neveam
+        - sgaroley
+      user:
+        name: "{{ items }}"
+        state : present
+        comment: "Admin of Web Application and Repository"
+        groups:
+          - wheel
+          - repdev
+
+    - name: "App admin"
+      user: 
+        name: "apache_web"
+        state : present
+        home: "/var/www/html/SitkaGlobal"
+        groups: "repdev"
+        shell: "/usr/bin/false"
+
+
+    - name: "copy checsumKey Secred to Apache-Chief"
+      when: ansible_hostname == "W192168056104"
+      copy:
+        src:  "/opt/cert/apache/EncapKey.p9x"
+        dest: "/var/www/html/ServiceMaster/EncapKey.p9x"
+        user: "apache_web"
+        group:  "repdev"
+        mode: "740"
+
     - name: "Change the default server admin to info_devroot@karmicsaint.com"
       notify: "restart-Apache2_webapp"
       replace: 
