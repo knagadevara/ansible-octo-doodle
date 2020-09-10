@@ -3,7 +3,12 @@
     remote_user: root
     become: yes
     gather_facts: no
-
+    handlers:
+      - name: restart nfs server
+        listen: "restart-nfs"
+        service:
+          name: nfs-server
+          state: restarted    
     tasks:
       - name: "remove remi repository"
         yum_repository:
@@ -21,6 +26,7 @@
           reposdir: "/etc/yum.repos.d/"
 
       - name: install nfs
+        notify: "restart-nfs"
         dnf:
           name:
             - nfs-utils
@@ -54,8 +60,3 @@
           dest: /etc/exports
           owner: root
           group: root
-
-      - name: restart nfs server
-        service:
-          name: nfs-server
-          state: restarted
