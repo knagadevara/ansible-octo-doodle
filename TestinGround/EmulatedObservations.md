@@ -8,3 +8,4 @@
         - Push
         - copy
     - Is rsync similar to synchronize?
+        - synchrozize is a wrapper module designed on rsync
