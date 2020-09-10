@@ -5,6 +5,21 @@
     gather_facts: no
 
     tasks:
+      - name: "remove remi repository"
+        yum_repository:
+          name: remi
+          file: /etc/yum.repos.d/remi.repo
+          state: absent
+
+      - name: "add epel repository"
+        yum_repository:
+          name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm"
+          file: epel.repo
+          state: present
+          enabled: yes
+          gpgcheck: no
+          reposdir: "/etc/yum.repos.d/"
+
       - name: install nfs
         dnf:
           name:
