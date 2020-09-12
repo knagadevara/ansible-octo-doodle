@@ -1,0 +1,40 @@
+---
+- hosts:
+  become: yes
+  vars:
+    elasticDisksDev:
+      - /dev/sdb1
+      - /dev/sdb2
+    
+  tasks:
+    - name: "create partition"
+      loop: "{{ vars['elasticDisksDev'] }}"
+      parted:
+        device: {{ item }}
+        number: 1
+        state: present
+        label: msdos
+        flags: [lvm]
+        part_type : logical
+        part_end: 1GB
+    - name: 'create a volume group'
+      lvg:
+        pvs: /dev/sdb1, /dev/sdb2
+        vg: k8svg
+        state: present
+        force: yes
+
+    - name: "create logival volume"
+      lvol:
+        vg: k8svg
+        lv: k8slv
+        size: 512m
+        shrink: yes
+        resizefs: yes
+        force: yes
+        state: present
+
+## -----
+## Need to create vdo before adding the disks to a volume group.
+##------
+
