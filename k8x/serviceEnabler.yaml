@@ -1,0 +1,19 @@
+---
+- hosts: k8x77-mgr-prd
+  become: yes
+  handlers:
+  vars:
+  tasks:
+    - name: "Start Supported Services"
+      loop:
+        - "docker.service"
+        - "firewalld"
+        - "kubectl"
+        - "containerd.service"
+
+      systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+        daemon_reload: no
+        force: no
