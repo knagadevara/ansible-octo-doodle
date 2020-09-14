@@ -1,0 +1,37 @@
+---
+- hosts:
+  become: yes
+  tasks:
+    - name: 'Archive importsnt configuration files'
+      archive:
+        path:
+          - /etc/docker/daemon.json
+          - /etc/containerd/config.toml
+          - /etc/yum.repos.d/kubernetes.repo
+          - /etc/yum.repos.d/jenkins.repo
+        dest: "/opt/backup/configFiles.txz"
+        foremat: xz
+        mode: 0644
+        owner: starlord
+        group: repdev
+
+####### Use the below to unarchive 
+    - name: "Archiving something that is already present in the system"
+      unarchive:
+        remote_src: no
+        src: /opt/backup/configFiles.txz
+        dest: /tmp/
+        mode: 0644
+        owner: starlord
+        group: repdev
+
+############ Download an archive from remote location, mainly used to get the artifacts
+
+    - name: "Get build artifacts"
+      unarchive:
+        remote_src: yes
+        src: "https://example101.com.buildOutput.gz"
+        dest: /opt/buildVer101
+        mode: 0644
+        owner: starlord
+        group: repdev        
