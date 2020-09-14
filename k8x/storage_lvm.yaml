@@ -5,7 +5,11 @@
     elasticDisksDev:
       - /dev/sdb1
       - /dev/sdb2
-    
+
+## -----
+## Need to create vdo before adding the disks to a volume group.
+##------
+      
   tasks:
     - name: "create partition"
       loop: "{{ vars['elasticDisksDev'] }}"
@@ -34,7 +38,14 @@
         force: yes
         state: present
 
-## -----
-## Need to create vdo before adding the disks to a volume group.
-##------
-
+    - name: "format and create a FileSystem"
+      filesystem:
+        fstype: xfs
+        dev: /dev/mapper/k8svg-k8slv
+    - name: "Mount filesystem"
+      mount:
+        path: "/data01"
+        src: "/dev/mapper/k8svg-k8slv"
+        fstype: xfs
+        state: mounted
+        backup: yes
