@@ -1,0 +1,16 @@
+---
+- hosts:
+  become: yes
+  tasks:
+    - name: "Update Yum"
+      cron:
+        name: "Update Yum"
+        weekday: "0"
+        minute: "0"
+        hour: "12"
+        user: root
+        month: "*"
+        state: present
+        job: "yum update --security -y"
+
+                
