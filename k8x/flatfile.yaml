@@ -1,0 +1,8 @@
+---
+- hosts:
+  become: yes
+  tasks:
+    - name: "Save Required details"
+      template:
+        src: var-file.j2
+        dest: /tmp/hostinfo

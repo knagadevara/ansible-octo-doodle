@@ -1,0 +1,4 @@
+NetworkInterfaces = {{ ansible_interfaces|join(' , ') }}
+IPv4Addresses = {{ ansible_default_ipv4.addresses }}
+StoreageBlockdevices = {{ ansible_devices|join(' , ') }}
+OperatingSystem = {{ ansible_distribution }} {{ ansible_distribution_version }}
