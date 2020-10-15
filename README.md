@@ -4,8 +4,8 @@
 #### TestinGround - Emulate and Observe!
 ----------------------------------------
 
-- Tests that have to be done or theories that have to be validated beforing moving them to production
-- Doubts that have to verified, which would be part of the solution plan.
+- Tests that have to be done or theories that have to be validated before moving them to production
+- Doubts that have to clarified, which would be part of the solution plan.
 - Will this work if a parameter is added or removed???
 - re-think an existing problem!
 - Document important findings, which were thought to work otherwise [ design epiphany ]
