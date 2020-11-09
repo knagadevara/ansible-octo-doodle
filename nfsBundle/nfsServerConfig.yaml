@@ -26,13 +26,14 @@
           reposdir: "/etc/yum.repos.d/"
 
       - name: install nfs
+        when: ansible_facts['os_family'] == "RedHat" and ansible_facts['lsb']['major_release'] | int >= 7
         notify: "restart-nfs"
         dnf:
           name:
             - nfs-utils
             - nfs4-acl-tools
           state: present
-
+          
       - name: Create mountable dir
         file:
           path: /share
