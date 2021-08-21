@@ -1,39 +1,46 @@
 ---
 all:
   hosts:
+    M192168056101.k8x77-mgr-prd.PyDevRa.zone:
+    M192168056102.k8x77-mgr-prd.PyDevRa.zone:
+    W192168056103.k8x77-wkr-prd.PyDevRa.zone:
+    W192168056104.k8x77-wkr-prd.PyDevRa.zone:
+    W192168056105.k8x77-wkr-prd.PyDevRa.zone:
+    S192168056121.nfs77-srv-prd.PyDevRa.zone:
+    C192168056122.nfs77-clt-prd.PyDevRa.zone:
+    C192168056123.nfs77-clt-prd.PyDevRa.zone:
+    C192168056124.nfs77-clt-prd.PyDevRa.zone:
+    C192168056125.nfs77-clt-prd.PyDevRa.zone:
+
   children:
 
-    k8x77-cluster:
-      # Group for 'k8x77 Cluster' has 2 children
+    k8x77-cluster: # Group for 'k8x77 Cluster' has 2 children
       children:
-      ## Manager Node Decleration
-        k8x77-mgr-prd:
+        k8x77-mgr-prd: ## Child 1 Manager Node Decleration
           hosts:
-            # M192168056101.k8x77-mgr-prd.PyDevRa.zone:
+            M192168056101.k8x77-mgr-prd.PyDevRa.zone:
             M192168056102.k8x77-mgr-prd.PyDevRa.zone:
           vars:
             ansible_user: knagadevara
             ansible_port: 22
             ansible_ssh_private_key_file: /home/knagadevara/.ssh/pkey/key1
-            
-      ## Worker Node Decleration
-        k8x77-wkr-prd:
+
+        k8x77-wkr-prd: ## ## Child 2 Worker Node Decleration
           hosts:
             W192168056103.k8x77-wkr-prd.PyDevRa.zone:
             W192168056104.k8x77-wkr-prd.PyDevRa.zone:
             W192168056105.k8x77-wkr-prd.PyDevRa.zone:
+          vars:
 
             
-    storage-unit:
+    storage-unit: # Group for 'storage-unit' has 2 children
       children:
-        ## nfs server Decleration
-        nfs_server:
+        nfs_server: ## nfs server Decleration
           hosts:
             S192168056121.nfs77-srv-prd.PyDevRa.zone:
           vars:
 
-        ## nfs client Decleration
-        nfs_client:
+        nfs_client: ## nfs client Decleration
           hosts:
             C192168056122.nfs77-clt-prd.PyDevRa.zone:
             C192168056123.nfs77-clt-prd.PyDevRa.zone:
