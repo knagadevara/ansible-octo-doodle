@@ -1,0 +1,7 @@
+all:
+  hosts:
+    exp_box:
+      ansible_host: M192168056102.k8x77-mgr-prd.PyDevRa.zone
+      ansible_port: 22
+      ansible_user: knagadevara
+      ansible_ssh_private_key_file: /home/knagadevara/.ssh/pkey/key1

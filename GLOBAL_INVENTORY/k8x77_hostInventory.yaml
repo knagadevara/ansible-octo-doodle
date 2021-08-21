@@ -9,17 +9,19 @@ all:
       ## Manager Node Decleration
         k8x77-mgr-prd:
           hosts:
-            M192168056101.k8x77-mgr-prd.PyDevRa.zone:
+            # M192168056101.k8x77-mgr-prd.PyDevRa.zone:
             M192168056102.k8x77-mgr-prd.PyDevRa.zone:
           vars:
-
+            ansible_user: knagadevara
+            ansible_port: 22
+            ansible_ssh_private_key_file: /home/knagadevara/.ssh/pkey/key1
+            
       ## Worker Node Decleration
         k8x77-wkr-prd:
           hosts:
             W192168056103.k8x77-wkr-prd.PyDevRa.zone:
             W192168056104.k8x77-wkr-prd.PyDevRa.zone:
             W192168056105.k8x77-wkr-prd.PyDevRa.zone:
-          vars:
 
             
     storage-unit:
