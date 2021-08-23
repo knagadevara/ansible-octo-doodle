@@ -1,0 +1,12 @@
+---
+- hosts: exp_box
+  tasks:
+
+  - name: "Update Cache"
+    apt:
+      update_cache: true
+
+  - name: "Install Apache Httpd"
+    apt:
+      name: apache2
+      state: present
