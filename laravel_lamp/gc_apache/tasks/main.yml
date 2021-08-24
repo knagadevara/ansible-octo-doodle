@@ -1,0 +1,44 @@
+---
+# tasks file for gc_apache
+- name: "Install Apache2"
+  notify: "Start_Apache2"
+  apt:
+    name: apache2
+    state: present
+
+- name: "Create Application Group"
+  group:
+    name: g_webapp
+    state: present
+    system: no
+
+- name: "Create User"
+  loop: "{{ [users_apache]|flatten(1) }}"
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.pass | password_hash('sha512') }}"
+    group: g_webapp
+    comment: "Application Management User(AMU)"
+    system: no
+    state: absent
+    force: yes
+
+- name: "Create a html file"
+  file:
+    path: "/var/www/html/index.html"
+    state: touch
+    owner: au_apache
+    group: g_webapp
+    mode: '0644'
+
+- name: "Add content to the file"
+  notify: "Restart_Apache2"
+  register: echo_process
+  shell: echo "Hey YO!" > index.html
+  args:
+    chdir: "/var/www/html/"
+    executable: "/bin/bash"
+
+- name: "Print Stuff"
+  debug:
+    msg: "{{ echo_process.stdout_lines }}" 

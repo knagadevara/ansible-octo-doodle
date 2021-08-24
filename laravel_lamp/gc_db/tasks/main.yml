@@ -1,0 +1,77 @@
+---
+# tasks file for gc_db
+- name: "Install MariaDB"
+  loop: "{{ [maria_packages] | flatten(1) }}"
+  apt:
+    name: "{{ item }}"
+    state: latest
+
+- name: "Create DBA user-group"
+  notify: "Start_mariadb"
+  group:
+    name: g_dbapp
+    system: no
+    state: present
+
+- name: "Create DBA User"
+  loop: "{{ [users_dba]|flatten(1) }}"
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.pass | password_hash('sha512') }}"
+    group: g_dbapp
+    comment: "Database Management User(DMU)"
+    system: no
+    state: present
+
+- name: "Configuration Template"
+  notify: "Restart_mariadb"
+  template:
+    src: "my.cnf.j2"
+    dest: "/etc/my.cnf"
+    owner: root
+    group: g_dbapp
+    mode: '0664'
+    force: yes
+
+- name: "Copy the reset_script"
+  copy:
+    src: reset_root.sh
+    dest: /tmp/reset_root.sh
+    owner: root
+    group: g_dbapp
+    mode: '0774'
+    force: yes
+
+- name: "Removes all anonymous user accounts"
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent    
+
+- name: "Change the authentication plugin of MySQL root user to mysql_native_password and flush privilages"
+  register: pass_reset
+  shell: source reset_root.sh
+  args:
+    chdir: /tmp/
+    executable: "/bin/bash"
+    warn: no
+
+- name: "Set MySQL root Password"
+  mysql_user:
+    login_host: "localhost"
+    login_user: "root"
+    login_password: ""
+    name: "root"
+    password: "{{ mysql_root_pass | password_hash('sha512') }}"
+    state: present
+
+- name: "Create Additional DB user"
+  loop: "{{ [users_dba]|flatten(1) }}"
+  mysql_user:
+    login_host: "localhost"
+    login_user: "root"
+    login_password: "{{ mysql_root_pass | password_hash('sha512') }}"
+    name: "{{ item.name }}"
+    password: "{{ item.pass | password_hash('sha512') }}"
+    priv: '*.*:ALL'
+    state: present

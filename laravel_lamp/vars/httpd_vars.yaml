@@ -1,9 +1,0 @@
-modules_apache:
-  - autoindex
-  - dump_io
-
-users_apache:
-  - au_apache
-  - ju_gacharya
-  - ju_mukundha
-  - ju_csivaji

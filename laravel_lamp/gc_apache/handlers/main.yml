@@ -1,0 +1,17 @@
+---
+# handlers file for gc_apache
+- name: "Reloaded_Apache2"
+  service:
+    name: apache2
+    state: reloaded
+
+- name: "Start_Apache2"
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: "Restart_Apache2"
+  service:
+    name: apache2
+    state: restarted

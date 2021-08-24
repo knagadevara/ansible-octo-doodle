@@ -1,0 +1,5 @@
+---
+- hosts: exp_box
+  gather_facts: no
+  roles:
+    - gc_apache

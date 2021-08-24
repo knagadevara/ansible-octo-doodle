@@ -1,0 +1,17 @@
+---
+# handlers file for gc_db
+- name: "Reloaded_mariadb"
+  service:
+    name: mariadb
+    state: reloaded
+
+- name: "Start_mariadb"
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: "Restart_mariadb"
+  service:
+    name: mariadb
+    state: restarted
