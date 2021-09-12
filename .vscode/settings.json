@@ -1,0 +1,4 @@
+{
+    "ansible.validate.executablePath": "/usr/local/bin/ansible-lint",
+    "ansible.vault.executablePath": "/usr/local/bin/ansible-vault"
+}
