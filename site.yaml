@@ -1,0 +1,7 @@
+---
+- name: Configure SaltStack on Rocky Linux 9
+  hosts: all
+  become: yes
+
+  roles:
+    - saltstack
