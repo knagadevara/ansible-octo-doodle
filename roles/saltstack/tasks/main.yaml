@@ -1,0 +1,45 @@
+---
+- name: Ensure dnf-plugins-core is installed (for versionlock)
+  ansible.builtin.dnf:
+    name: dnf-plugins-core
+    state: present
+
+- name: Add SaltStack repo to Rocky Linux 9
+  ansible.builtin.get_url:
+    url: https://github.com/saltstack/salt-install-guide/releases/latest/download/salt.repo
+    dest: /etc/yum.repos.d/salt.repo
+    mode: '0644'
+
+- name: Clean DNF expire cache
+  ansible.builtin.command: dnf clean expire-cache
+
+- name: Update system packages
+  ansible.builtin.dnf:
+    name: '*'
+    state: latest
+    update_cache: yes
+
+- name: Install Salt components
+  ansible.builtin.dnf:
+    name: "{{ salt_packages }}"
+    state: present
+
+- name: Lock Salt package versions
+  ansible.builtin.command: "dnf versionlock add {{ item }}"
+  loop: "{{ salt_packages }}"
+  args:
+    warn: false
+  register: versionlock_result
+  changed_when: "'adding' in versionlock_result.stdout"
+
+- name: Enable and start Salt services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop: "{{ salt_services }}"
+
+- name: Ensure runtime dependencies are installed
+  ansible.builtin.dnf:
+    name: "{{ runtime_dependencies }}"
+    state: present

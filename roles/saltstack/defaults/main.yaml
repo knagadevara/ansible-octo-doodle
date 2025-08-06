@@ -1,0 +1,25 @@
+---
+salt_packages:
+  - salt
+  - salt-master
+  - salt-minion
+  - salt-ssh
+  - salt-syndic
+  - salt-cloud
+  - salt-api
+
+salt_services:
+  - salt-master
+  - salt-minion
+  - salt-syndic
+  - salt-api
+
+runtime_dependencies:
+  - bash
+  - sh
+  - glibc
+  - dmidecode
+  - openssl
+  - pciutils
+  - systemd
+  - which
