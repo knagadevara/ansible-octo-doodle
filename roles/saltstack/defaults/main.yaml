@@ -15,6 +15,7 @@ salt_services:
   - salt-api
 
 runtime_dependencies:
+  - dnf-plugins-core
   - dnf-command(versionlock)
   - glibc
   - dmidecode
