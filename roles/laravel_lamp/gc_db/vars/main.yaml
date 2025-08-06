@@ -1,0 +1,17 @@
+---
+# vars file for gc_db
+sudo_user_pass: ""
+msql_root_pass: ""
+
+maria_packages:
+  - mariadb-server
+  - mariadb-client
+  - python3-pymysql
+
+users_dba:
+  - { name: 'ju_nikma' , pass: '' }
+  - { name: 'ju_jupra' , pass: '' }
+  - { name: 'ju_dhaunmuk' , pass: '' }
+  - { name: 'ju_lakba' , pass: '' }
+
+maria_server_id: 101 
