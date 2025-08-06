@@ -1,5 +1,5 @@
 ---
-- name: Ensure dnf-plugins-core is installed (for versionlock)
+- name: Ensure dnf is installed (for versionlock)
   ansible.builtin.dnf:
     name: dnf-plugins-core
     state: present
@@ -19,18 +19,15 @@
     state: latest
     update_cache: yes
 
+- name: Ensure runtime dependencies are installed
+  ansible.builtin.dnf:
+    name: "{{ runtime_dependencies }}"
+    state: present
+
 - name: Install Salt components
   ansible.builtin.dnf:
     name: "{{ salt_packages }}"
     state: present
-
-- name: Lock Salt package versions
-  ansible.builtin.command: "dnf versionlock add {{ item }}"
-  loop: "{{ salt_packages }}"
-  args:
-    warn: false
-  register: versionlock_result
-  changed_when: "'adding' in versionlock_result.stdout"
 
 - name: Enable and start Salt services
   ansible.builtin.systemd:
@@ -39,7 +36,11 @@
     state: started
   loop: "{{ salt_services }}"
 
-- name: Ensure runtime dependencies are installed
-  ansible.builtin.dnf:
-    name: "{{ runtime_dependencies }}"
-    state: present
+- name: Lock Salt package versions
+  ansible.builtin.command: "dnf versionlock add {{ item }}"
+  loop: "{{ salt_packages }}"
+  register: versionlock_results
+
+- name: Print versionlock results (debugging)
+  ansible.builtin.debug:
+    var: versionlock_results.results

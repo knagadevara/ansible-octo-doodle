@@ -1,0 +1,9 @@
+all:
+  hosts:
+    linode_main:
+      ansible_host: <ip/fqdn>
+      ansible_port: 22
+      ansible_user: root
+      ansible_become: yes
+      ansible_become_method: sudo
+      ansible_ssh_private_key_file: /home/<user>/.ssh/<user>.pem

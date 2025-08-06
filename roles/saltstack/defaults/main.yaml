@@ -15,8 +15,7 @@ salt_services:
   - salt-api
 
 runtime_dependencies:
-  - bash
-  - sh
+  - dnf-command(versionlock)
   - glibc
   - dmidecode
   - openssl

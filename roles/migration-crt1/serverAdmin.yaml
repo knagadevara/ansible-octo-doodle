@@ -13,7 +13,7 @@
 
     - name: "create web-admin users"
       loop:
-        - knagadevara
+        - <user>
         - neveam
         - sgaroley
       user:

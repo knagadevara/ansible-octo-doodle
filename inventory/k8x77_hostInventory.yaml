@@ -21,9 +21,9 @@ all:
             M192168056101.k8x77-mgr-prd.PyDevRa.zone:
             M192168056102.k8x77-mgr-prd.PyDevRa.zone:
           vars:
-            ansible_user: knagadevara
+            ansible_user: <user>
             ansible_port: 22
-            ansible_ssh_private_key_file: /home/knagadevara/.ssh/pkey/key1
+            ansible_ssh_private_key_file: /home/<user>/.ssh/pkey/key1
 
         k8x77-wkr-prd: ## ## Child 2 Worker Node Decleration
           hosts:
