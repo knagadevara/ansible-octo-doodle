@@ -1,0 +1,6 @@
+DEVICE=eth1
+BOOTPROTO=static
+ONBOOT=yes
+IPADDR=192.168.10.{{ netroutes_eth1_last_octet }}
+NETMASK=255.255.255.0
+GATEWAY=192.168.10.1

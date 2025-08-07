@@ -1,4 +1,6 @@
 {
-    "ansible.validate.executablePath": "/usr/local/bin/ansible-lint",
-    "ansible.vault.executablePath": "/usr/local/bin/ansible-vault"
+    "ansible.validate.executablePath": "/opt/homebrew/bin/ansible-lint",
+    "ansible.vault.executablePath": "/opt/homebrew/bin/ansible-vault",
+    "ansible.ansible.path": "/opt/homebrew/bin/ansible",
+    "ansible.python.interpreterPath": "/usr/local/bin/python"
 }

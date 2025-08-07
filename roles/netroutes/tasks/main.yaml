@@ -1,0 +1,28 @@
+---
+
+- name: Gather interface facts
+  ansible.builtin.setup:
+    gather_subset:
+      - network
+
+- name: Set eth1_last_octet based on eth0 IP
+  ansible.builtin.set_fact:
+    netroutes_eth1_last_octet: "{{ ansible_eth0.ipv4.address.split('.')[-1] }}"
+
+- name: Create network files
+  ansible.builtin. file:
+    path: "/etc/sysconfig/network-scripts/{{ item }}"
+    state: touch
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ netroutes_eth1_files }}"
+
+- name: Configure route for eth1
+  ansible.builtin.template:
+    src: "templates/{{ item }}.j2"
+    dest: "/etc/sysconfig/network-scripts/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ netroutes_eth1_files }}"
