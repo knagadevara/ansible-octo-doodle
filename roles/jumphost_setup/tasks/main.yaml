@@ -26,13 +26,6 @@
     name: iptable_nat
     state: present
 
-- name: Enable IPv4 forwarding permanently
-  ansible.builtin.sysctl:
-    name: net.ipv4.ip_forward
-    value: '1'
-    state: present
-    reload: yes
-
 - name: Masquerade traffic on eth0 (NAT)
   ansible.builtin.command: "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
   register: nat_masq_rule
