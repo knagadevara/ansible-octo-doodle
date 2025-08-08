@@ -1,0 +1,6 @@
+---
+- name: Set hostname
+  ansible.builtin.include_tasks: set_hostname.yaml
+
+- name: Update /etc/hosts
+  ansible.builtin.include_tasks: update_hosts.yaml

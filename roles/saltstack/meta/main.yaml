@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: your_name
+  author: VNSK
   description: Install and configure SaltStack on Rocky Linux 9
   license: MIT
   min_ansible_version: "2.12"
@@ -8,3 +8,4 @@ galaxy_info:
     - name: EL
       versions:
         - "9"
+        

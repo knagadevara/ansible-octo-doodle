@@ -2,7 +2,7 @@
 - hosts:
   become: yes
   tasks:
-    - name: 'Archive importsnt configuration files'
+    - name: 'Archive important configuration files'
       archive:
         path:
           - /etc/docker/daemon.json
@@ -10,7 +10,7 @@
           - /etc/yum.repos.d/kubernetes.repo
           - /etc/yum.repos.d/jenkins.repo
         dest: "/opt/backup/configFiles.txz"
-        foremat: xz
+        format: xz
         mode: 0644
         owner: starlord
         group: repdev

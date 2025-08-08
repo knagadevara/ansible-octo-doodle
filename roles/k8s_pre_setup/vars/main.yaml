@@ -1,0 +1,7 @@
+k8s_pre_setup_go_version: "1.24.6"
+k8s_pre_setup_arch: "amd64"
+k8s_pre_setup_os: "CentOS_9"
+k8s_pre_setup_cri_o_version: "1.33.3"
+k8s_pre_setup_kubernetes_repo_version: "v1.33.3"
+k8s_pre_setup_cri_socket: "/var/run/crio/crio.sock"
+k8s_pre_setup_kubelet_config_path: "/var/lib/kubelet/config.yaml"

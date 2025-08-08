@@ -1,0 +1,3 @@
+---
+- name: Reboot Host
+  ansible.builtin.include_tasks: rebootSystem.yaml

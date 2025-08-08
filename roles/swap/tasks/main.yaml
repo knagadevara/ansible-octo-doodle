@@ -1,0 +1,8 @@
+- name: Turn off swap
+  ansible.builtin.command: swapoff -a
+
+- name: Remove swap from fstab
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^.*\\sswap\\s.*$'
+    replace: ''

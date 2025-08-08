@@ -1,0 +1,25 @@
+- name: Download Go tarball
+  ansible.builtin.get_url:
+    url: "https://go.dev/dl/go{{ k8s_pre_setup_go_version }}.linux-{{ k8s_pre_setup_arch }}.tar.gz"
+    dest: "/tmp/go{{ k8s_pre_setup_go_version }}.linux-{{ k8s_pre_setup_arch }}.tar.gz"
+
+- name: Remove existing Go installation
+  ansible.builtin.file:
+    path: /usr/local/go
+    state: absent
+
+- name: Extract Go tarball
+  ansible.builtin.unarchive:
+    src: "/tmp/go{{ k8s_pre_setup_go_version }}.linux-{{ k8s_pre_setup_arch }}.tar.gz"
+    dest: /usr/local
+    remote_src: yes
+
+- name: Setup Go environment variables
+  ansible.builtin.blockinfile:
+    path: /etc/profile.d/go_env.sh
+    create: yes
+    block: |
+      export GOPATH=/usr/local/go
+      export GOBIN=$GOPATH/bin
+      export PATH=$PATH:$GOBIN
+    mode: '0755'

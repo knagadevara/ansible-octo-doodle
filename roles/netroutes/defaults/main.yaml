@@ -1,4 +1,6 @@
 ---
 netroutes_eth1_files:
   - "route-eth1"
+  - "ifcfg-eth0"
   - "ifcfg-eth1"
+  

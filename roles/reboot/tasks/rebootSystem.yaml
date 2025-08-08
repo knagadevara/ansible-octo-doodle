@@ -1,0 +1,4 @@
+---
+- name: Reboot the node to validate persistence
+  ansible.builtin.reboot:
+    msg: "Rebooting Host"

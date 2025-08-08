@@ -1,0 +1,20 @@
+- name: Check SELinux status
+  ansible.builtin.command: getenforce
+  register: selinux_status
+  changed_when: false
+
+- name: Disable SELinux temporarily (if enabled)
+  ansible.builtin.command: setenforce 0
+  when: selinux_status.stdout != "Disabled"
+
+- name: Ensure SELinux is disabled permanently in /etc/selinux/config
+  ansible.builtin.replace:
+    path: /etc/selinux/config
+    regexp: '^SELINUX=.*'
+    replace: 'SELINUX=disabled'
+
+# - name: Assert SELinux is disabled
+#   ansible.builtin.assert:
+#     that:
+#       - selinux_status.stdout == "Disabled" or selinux_status.stdout == "Permissive"
+#     fail_msg: "SELinux is still enforcing!"

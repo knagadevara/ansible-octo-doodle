@@ -1,0 +1,7 @@
+skip_list:
+  - no-changed-when
+  - package-latest
+exclude_paths:
+  - TestinGround/
+  - roles/old_role/
+verbosity: 1

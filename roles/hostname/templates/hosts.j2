@@ -1,0 +1,9 @@
+127.0.0.1   localhost localhost.localdomain
+::1         localhost localhost.localdomain
+
+127.0.0.1 {{ new_hostname }}
+::1       {{ new_hostname }}
+
+{% for entry in host_entries %}
+{{ entry.ip }} {{ entry.name }}
+{% endfor %}

@@ -1,0 +1,20 @@
+---
+- name: Set system hostname
+  ansible.builtin.hostname:
+    name: "{{ new_hostname }}"
+  become: true
+
+- name: Update /etc/hostname file
+  ansible.builtin.copy:
+    dest: /etc/hostname
+    content: "{{ new_hostname }}"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
+- name: Restart systemd-hostnamed
+  ansible.builtin.systemd:
+    name: systemd-hostnamed
+    state: restarted
+  become: true

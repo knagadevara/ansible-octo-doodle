@@ -8,9 +8,14 @@
 - name: Set eth1_last_octet based on eth0 IP
   ansible.builtin.set_fact:
     netroutes_eth1_last_octet: "{{ ansible_eth0.ipv4.address.split('.')[-1] }}"
+  when: ansible_eth0 is defined and ansible_eth0.ipv4 is defined and ansible_eth0.ipv4.address is defined
+
+- name: Debug the value of eth1_last_octet
+  ansible.builtin.debug:
+    msg: "eth1 last octet is {{ netroutes_eth1_last_octet }}"
 
 - name: Create network files
-  ansible.builtin. file:
+  ansible.builtin.file:
     path: "/etc/sysconfig/network-scripts/{{ item }}"
     state: touch
     owner: root

@@ -1,7 +1,37 @@
 ---
-- name: Configure SaltStack on Rocky Linux 9
-  hosts: all
-  become: yes
 
+# Play for jump host
+- name: Configure Jump Host
+  hosts: jmp
+  become: true
   roles:
-    - saltstack
+    - jumphost_setup
+
+# Play for all hosts
+- name: Set Swap, Disable SELinux,Set Hostname
+  hosts: all
+  become: true
+  roles:
+    - swap
+    - selinux
+    - hostname
+
+# Play for only k8s hosts
+- name: Add default Routes and Configure Kubernetes Hosts
+  hosts: k8s
+  become: true
+  roles:
+    - netroutes
+  # - k8s_pre_setup    
+
+- name: Reboot for k8s nodes for persistance
+  hosts: k8s
+  become: true
+  roles:
+    - reboot
+
+- name: Reboot for k8s nodes for persistance
+  hosts: jmp
+  become: true
+  roles:
+    - reboot

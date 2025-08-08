@@ -1,0 +1,80 @@
+- name: Enable iptable_nat kernel module (load at boot)
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/iptable_nat.conf
+    content: "iptable_nat\n"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable iptable_nat now
+  community.general.modprobe:
+    name: iptable_nat
+    state: present
+
+- name: Enable IP forwarding at runtime
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    state: present
+    reload: true
+
+- name: Persist net.ipv4.ip_forward setting across reboots
+  ansible.builtin.lineinfile:
+    path: /etc/sysctl.d/99-ipforward.conf
+    line: "net.ipv4.ip_forward = 1"
+    create: true
+    mode: '0644'
+
+- name: Ensure MASQUERADE rule exists in POSTROUTING on eth0
+  community.general.iptables:
+    table: nat
+    chain: POSTROUTING
+    jump: MASQUERADE
+    out_interface: eth0
+    ip_version: 4
+    state: present
+
+- name: Ensure FORWARD rule to accept traffic from eth1
+  community.general.iptables:
+    table: filter
+    chain: FORWARD
+    in_interface: eth1
+    jump: ACCEPT
+    ip_version: 4
+    state: present
+
+- name: Save iptables rules persistently
+  ansible.builtin.command: iptables-save
+  register: iptables_rules
+
+- name: Persist iptables rules to /etc/iptables/rules.v4
+  ansible.builtin.copy:
+    dest: /etc/iptables/rules.v4
+    content: "{{ iptables_rules.stdout }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure iptables rules are restored on boot
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/iptables-restore.service
+    content: |
+      [Unit]
+      Description=Restore iptables rules
+      After=network.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/sbin/iptables-restore /etc/iptables/rules.v4
+      RemainAfterExit=yes
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+
+- name: Enable iptables restore service
+  ansible.builtin.systemd:
+    name: iptables-restore.service
+    enabled: yes
+    state: started
+    daemon_reload: yes

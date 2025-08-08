@@ -1,0 +1,4 @@
+- name: "RSTRT-IPTAB"
+  ansible.builtin.service:
+    name: iptables
+    state: restarted
