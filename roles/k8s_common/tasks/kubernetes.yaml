@@ -1,0 +1,13 @@
+- name: Install Kubernetes packages {{ item }}
+  ansible.builtin.dnf:
+    name:
+     - kubelet
+     - kubeadm
+     - kubectl
+    state: present
+
+- name: Enable and start kubelet
+  ansible.builtin.service:
+    name: kubelet
+    enabled: yes
+    state: started

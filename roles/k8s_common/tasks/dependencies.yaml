@@ -1,0 +1,15 @@
+- name: "Installing {{ item }}"
+  ansible.builtin.dnf:
+    state: present
+    name: "{{ item }}"
+  loop:
+    - dnf-plugins-core
+    - dnf-command(versionlock)
+    - glibc
+    - dmidecode
+    - openssl
+    - pciutils
+    - systemd
+    - which
+    - tar
+    - net-tools

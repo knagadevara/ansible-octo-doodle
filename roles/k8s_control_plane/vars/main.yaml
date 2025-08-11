@@ -1,0 +1,6 @@
+k8s_control_plane_ports:
+  - 6443/tcp
+  - 2379-2380/tcp
+  - 10250/tcp
+  - 10257/tcp
+  - 10259/tcp

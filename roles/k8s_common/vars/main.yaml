@@ -1,0 +1,24 @@
+k8s_pre_setup_arch: "amd64"
+k8s_pre_setup_go_version: "1.24.6"
+k8s_pre_setup_kubernetes_repo_version: "v1.33"
+k8s_pre_setup_crio_repo_version: "v1.33"
+k8s_pre_setup_os: "CentOS_9"
+k8s_pre_setup_cri_socket: "/var/run/crio/crio.sock"
+k8s_pre_setup_kubelet_config_path: "/var/lib/kubelet/config.yaml"
+
+k8s_pre_setup_web_service:
+  - http
+  - https
+
+k8s_pre_setup_k8s_worker:
+  - 10250/tcp
+  - 10256/tcp
+  - 30000-32767/udp
+  - 30000-32767/tcp
+
+k8s_pre_setup_k8s_control:
+  - 6443/tcp
+  - 2379-2380/tcp
+  - 10250/tcp
+  - 10257/tcp
+  - 10259/tcp

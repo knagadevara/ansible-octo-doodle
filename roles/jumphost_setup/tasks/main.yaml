@@ -27,23 +27,23 @@
     state: present
 
 - name: Masquerade traffic on eth0 (NAT)
-  ansible.builtin.command: "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
+  ansible.builtin.shell: iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
   register: nat_masq_rule
-  ignore_errors: yes
+  ignore_errors: false
   changed_when: false
 
 - name: Add MASQUERADE rule to POSTROUTING if not present
-  ansible.builtin.command: "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
+  ansible.builtin.shell: iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
   when: nat_masq_rule.rc != 0
 
 - name: Allow forwarding traffic from eth1
-  ansible.builtin.command: "iptables -A FORWARD -i eth1 -j ACCEPT"
+  ansible.builtin.shell: iptables -A FORWARD -i eth1 -j ACCEPT
   register: forward_rule
-  ignore_errors: yes
+  ignore_errors: false
   changed_when: false
 
 - name: Add FORWARD rule to allow traffic from eth1
-  ansible.builtin.command: "iptables -A FORWARD -i eth1 -j ACCEPT"
+  ansible.builtin.shell: iptables -A FORWARD -i eth1 -j ACCEPT
   when: forward_rule.rc != 0
 
 - name: Persist iptables rules

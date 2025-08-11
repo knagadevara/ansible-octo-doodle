@@ -1,0 +1,28 @@
+- name: Add Kubernetes repo
+  ansible.builtin.copy:
+    dest: /etc/yum.repos.d/kubernetes.repo
+    content: |
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://pkgs.k8s.io/core:/stable:/{{ k8s_pre_setup_kubernetes_repo_version }}/rpm/
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://pkgs.k8s.io/core:/stable:/{{ k8s_pre_setup_kubernetes_repo_version }}/rpm/repodata/repomd.xml.key
+
+- name: Add CRI-O repo
+  ansible.builtin.copy:
+    dest: /etc/yum.repos.d/cri-o.repo
+    content: |
+      [cri-o]
+      name=CRI-O
+      baseurl=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/{{ k8s_pre_setup_crio_repo_version }}/rpm/
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/{{ k8s_pre_setup_crio_repo_version }}/rpm/repodata/repomd.xml.key
+
+- name: upgrade all packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: yes
+    update_only: yes

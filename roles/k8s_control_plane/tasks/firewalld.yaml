@@ -1,0 +1,6 @@
+- name: "K8s Contol-Plane TCP/UDP ports"
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    state: enabled
+    permanent: yes
+  loop: "{{ k8s_control_plane_ports }}"

@@ -1,0 +1,6 @@
+- name: "K8s Worker TCP/UDP ports"
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    state: enabled
+    permanent: yes
+  loop: "{{ k8s_worker_ports }}"

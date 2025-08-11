@@ -1,0 +1,2 @@
+- name: Adding Ports to FireWall-D
+  import_tasks: firewalld.yaml
