@@ -4,12 +4,12 @@ all:
     ansible_user: root
     ansible_become: yes
     ansible_become_method: sudo
-    ansible_ssh_private_key_file: /home/snagadev/.ssh/LinodeGeneralSSH.pem
+    ansible_ssh_private_key_file: /home/<>/.ssh/<>.pem
 
   children:
     kubernetes:
       vars:
-        ansible_ssh_common_args: '-o ProxyJump=root@172.232.120.36'
+        ansible_ssh_common_args: '-o ProxyJump=root@'
         host_entries:
           - { ip: "192.168.10.2", name: "M192-168-10-2.k8x77-mgr-prd.GoDevRa.zone" }
           - { ip: "192.168.10.3", name: "W192-168-10-3.k8x77-wkr-prd.GoDevRa.zone" }
@@ -34,7 +34,7 @@ all:
     jumpstation:
       hosts:
         J192-168-10-1:
-          ansible_host: 172.232.120.36
+          ansible_host: 
           new_hostname: "J192-168-10-1.k8x77-jmp-prd.GoDevRa.zone"
       vars:
         host_entries:

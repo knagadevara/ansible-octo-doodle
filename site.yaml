@@ -1,37 +1,47 @@
 ---
 
-# # Play for jump host
-# - name: Configure Jump Host
-#   hosts: jmp
-#   become: true
-#   roles:
-#     - jumphost_setup
+# Play for jump host
+- name: Configure Jump Host
+  hosts: jumpstation
+  become: true
+  roles:
+    - jumphost_setup
 
-# # Play for all hosts
-# - name: Set Swap, Disable SELinux,Set Hostname
-#   hosts: all
-#   become: true
-#   roles:
-#     - swap
-#     - selinux
-#     - hostname
+# Play for all hosts
+- name: Set Swap, Disable SELinux,Set Hostname
+  hosts: all
+  become: true
+  roles:
+    - swap
+    - selinux
+    - hostname
 
-# # Play for only k8s hosts
-# - name: Add default Routes and Configure Kubernetes Hosts
-#   hosts: k8s
-#   become: true
-#   roles:
-#     - netroutes
-#     # - k8s_pre_setup
-
+# OpenPorts on Firewall
+# Manager Nodes
 - name: Firewall - CP
   hosts: manager
   become: true
   roles:
     - k8s_control_plane
 
+# Worker Nodes
 - name: Firewall - WK
   hosts: worker
   become: true
   roles:
     - k8s_worker
+
+# Play for only k8s hosts
+- name: Add default Routes and Configure Kubernetes Hosts
+  hosts: kubernetes
+  become: true
+  roles:
+    - netroutes
+
+
+# REBOOT Nodes Manualy, comment above, add ne IP's to inventory and continue
+- name: Add default Routes and Configure Kubernetes Hosts
+  hosts: all
+  become: true
+  roles:
+    - k8s_common

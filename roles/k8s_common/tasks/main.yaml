@@ -1,17 +1,17 @@
-# - name: Add repos, Update and Upgrade Packages
-#   import_tasks: addRepo.yaml
+- name: Add repos, Update and Upgrade Packages
+  import_tasks: addRepo.yaml
 
-# - name: Install Dependencies
-#   import_tasks: dependencies.yaml
+- name: Install Dependencies
+  import_tasks: dependencies.yaml
 
-# - name: Setup Kernel Params
-#   import_tasks: kernel.yaml
+- name: Setup Kernel Params
+  import_tasks: kernel.yaml
 
-# - name: Install GoLang
-#   import_tasks: golang.yaml
+- name: Install GoLang
+  import_tasks: golang.yaml
 
-# - name: Install and configure CRI-O
-#   import_tasks: crio.yaml
+- name: Install and configure CRI-O
+  import_tasks: crio.yaml
 
-# - name: Setup Kubernetes repo and install components
-#   import_tasks: kubernetes.yaml
+- name: Setup Kubernetes repo and install components
+  import_tasks: kubernetes.yaml

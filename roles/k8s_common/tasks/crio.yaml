@@ -5,8 +5,20 @@
      - cri-o
     state: present
 
+- name: Configure crictl for CRI-O
+  ansible.builtin.copy:
+    owner: root
+    group: root
+    mode: 0644
+    dest: /etc/crictl.yaml
+    content: |
+      runtime-endpoint: unix:///var/run/crio/crio.sock
+      image-endpoint: unix:///var/run/crio/crio.sock
+      timeout: 10
+      debug: false
+
 - name: Enable and start CRI-O
   ansible.builtin.service:
     name: crio
     enabled: yes
-    state: started
+    state: restarted

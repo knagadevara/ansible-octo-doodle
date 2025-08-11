@@ -47,21 +47,23 @@
   when: forward_rule.rc != 0
 
 - name: Persist iptables rules
-  ansible.builtin.shell: iptables-save > /etc/sysconfig/iptables
+  ansible.builtin.shell: service iptables save
   notify: "RSTRT-IPTAB"
 
 - name: Create network files
   ansible.builtin.file:
-    path: "/etc/sysconfig/network-scripts/ifcfg-eth1"
+    path: "/etc/sysconfig/network-scripts/{{ item }}"
     state: touch
     owner: root
     group: root
     mode: '0644'
+  loop: "{{ jumphost_setup_vars }}"
 
 - name: Configure route for eth1
   ansible.builtin.template:
-    src: "templates/ifcfg-eth1.j2"
-    dest: "/etc/sysconfig/network-scripts/ifcfg-eth1"
+    src: "templates/{{ item }}.j2"
+    dest: "/etc/sysconfig/network-scripts/{{ item }}"
     owner: root
     group: root
     mode: '0644'
+  loop: "{{ jumphost_setup_vars }}"
