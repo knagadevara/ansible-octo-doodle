@@ -4,3 +4,6 @@ k8s_control_plane_ports:
   - 10250/tcp
   - 10257/tcp
   - 10259/tcp
+  - 5473/tcp
+  - 179/tcp
+  - 179/udp

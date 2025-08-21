@@ -38,7 +38,6 @@
   roles:
     - netroutes
 
-
 # REBOOT Nodes Manualy, comment above, add ne IP's to inventory and continue
 - name: Add default Routes and Configure Kubernetes Hosts
   hosts: all

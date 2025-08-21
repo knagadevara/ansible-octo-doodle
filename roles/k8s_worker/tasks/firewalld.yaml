@@ -4,3 +4,12 @@
     state: enabled
     permanent: yes
   loop: "{{ k8s_worker_ports }}"
+
+
+- name: Enable and start firewalld
+  ansible.builtin.service:
+    name: firewalld
+    enabled: yes
+    state: restarted
+
+    

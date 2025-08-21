@@ -3,3 +3,6 @@ k8s_worker_ports:
   - 10256/tcp
   - 30000-32767/udp
   - 30000-32767/tcp
+  - 5473/tcp
+  - 179/tcp
+  - 179/udp
